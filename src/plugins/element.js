@@ -27,8 +27,12 @@ import {
   Tag,
   Tree,
   Select,
-  Option
+  Option,
+  Cascader
 } from 'element-ui'
+import TreeTable from 'vue-table-with-tree-grid'
+// 手动注册 TreeTable 全局可用
+Vue.component('tree-table', TreeTable)
 
 // 按需导入所需配件, 先导入, 后使用
 Vue.use(Button)
@@ -57,6 +61,7 @@ Vue.use(Tag)
 Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Cascader)
 
 // 全局挂载(挂载到 vue 的原型对象上)
 Vue.prototype.$message = Message
