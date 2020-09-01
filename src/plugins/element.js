@@ -31,7 +31,13 @@ import {
   Cascader,
   Alert,
   Tabs,
-  TabPane
+  TabPane,
+  Steps,
+  Step,
+  CheckboxGroup,
+  Checkbox,
+  Upload
+
 } from 'element-ui'
 import TreeTable from 'vue-table-with-tree-grid'
 // 手动注册 TreeTable 全局可用
@@ -68,6 +74,11 @@ Vue.use(Cascader)
 Vue.use(Alert)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
+Vue.use(Upload)
 
 // 全局挂载(挂载到 vue 的原型对象上)
 Vue.prototype.$message = Message

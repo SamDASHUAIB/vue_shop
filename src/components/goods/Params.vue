@@ -23,6 +23,7 @@
           <span>选择商品分类:</span>
           <!-- 选择商品分类的级联选择框 -->
           <el-cascader
+            expand-trigger="hover"
             v-model="selectedCateKeys"
             :options="cateList"
             :props="cateProps"
@@ -117,40 +118,40 @@
           <!-- 静态属性表格 -->
           <el-table :data="onlyTableData" border stripe>
             <!-- 展开列 -->
+
             <el-table-column type="expand">
-              <el-table-column type="expand">
-                <template slot-scope="scope">
-                  <!-- 循环渲染 tag -->
-                  <el-tag
-                    v-for="(item, i) in scope.row.attr_vals"
-                    :key="i"
-                    closable
-                    @close="handleClose(i, scope.row)"
-                  >
-                    {{ item }}
-                  </el-tag>
-                  <!-- 输入文本框 -->
-                  <el-input
-                    class="input-new-tag"
-                    v-if="scope.row.inputVisible"
-                    v-model="scope.row.inputValue"
-                    ref="saveTagInput"
-                    size="small"
-                    @keyup.enter.native="handleInputConfirm(scope.row)"
-                    @blur="handleInputConfirm(scope.row)"
-                  >
-                  </el-input>
-                  <!--  添加按钮  -->
-                  <el-button
-                    v-else
-                    class="button-new-tag"
-                    size="small"
-                    @click="showInput(scope.row)"
-                    >+ New Tag</el-button
-                  >
-                </template>
-              </el-table-column>
+              <template slot-scope="scope">
+                <!-- 循环渲染 tag -->
+                <el-tag
+                  v-for="(item, i) in scope.row.attr_vals"
+                  :key="i"
+                  closable
+                  @close="handleClose(i, scope.row)"
+                >
+                  {{ item }}
+                </el-tag>
+                <!-- 输入文本框 -->
+                <el-input
+                  class="input-new-tag"
+                  v-if="scope.row.inputVisible"
+                  v-model="scope.row.inputValue"
+                  ref="saveTagInput"
+                  size="small"
+                  @keyup.enter.native="handleInputConfirm(scope.row)"
+                  @blur="handleInputConfirm(scope.row)"
+                >
+                </el-input>
+                <!--  添加按钮  -->
+                <el-button
+                  v-else
+                  class="button-new-tag"
+                  size="small"
+                  @click="showInput(scope.row)"
+                  >+ New Tag</el-button
+                >
+              </template>
             </el-table-column>
+
             <!-- 索引列 -->
             <el-table-column type="index" label="#"></el-table-column>
             <el-table-column
@@ -231,7 +232,7 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
       // 商品分类列表
       cateList: [],
@@ -241,9 +242,7 @@ export default {
         value: 'cat_id',
         // 选中的值的具体显示文本
         label: 'cat_name',
-        children: 'children',
-
-        expandTrigger: 'hover'
+        children: 'children'
       },
       // 级联选择框双向绑定到的数组
       selectedCateKeys: [],
@@ -281,12 +280,12 @@ export default {
       inputValue: ''
     }
   },
-  created () {
+  created() {
     // 获取到一二三级商品分类的全部数据
     this.getCateList()
   },
   methods: {
-    async getCateList () {
+    async getCateList() {
       const { data: res } = await this.$http.get('categories')
       if (res.meta.status !== 200) {
         return this.$message.error('请求商品分类数据失败!')
@@ -296,19 +295,19 @@ export default {
       console.log(this.cateList)
     },
     // 级联选择框的选中项发生变化, 触发这个函数
-    async handleChange () {
+    async handleChange() {
       // 级联选择框的选中项发生变化, 发起请求
       console.log(this.activeName)
     },
 
     // tab 页签点击事件的处理函数
-    handleTabClick () {
+    handleTabClick() {
       // tabs发生切换, 发起请求
       this.getParamsData()
       console.log(this.activeName)
     },
     // 获取所有参数项列表
-    async getParamsData () {
+    async getParamsData() {
       // 如果 selectedCateKeys 的长度不等于 3 表示选中的不是三级分类
       if (this.selectedCateKeys.length !== 3) {
         // 清空分类数组
@@ -345,12 +344,12 @@ export default {
       }
     },
     // 监听对话框的关闭
-    addDialogClosed () {
+    addDialogClosed() {
       // 重置 dialog
       this.$refs.addFormRef.resetFields()
     },
     // 点击按钮, 添加参数
-    addParams () {
+    addParams() {
       // 表单预验证
       this.$refs.addFormRef.validate(async valid => {
         if (!valid) return
@@ -374,7 +373,7 @@ export default {
       })
     },
     // 点击编辑按钮, 展示修改对话框
-    async showEditDialog (atrrId) {
+    async showEditDialog(atrrId) {
       // 发起请求拿到数据
       const { data: res } = await this.$http.get(
         `categories/${this.cateId}/attributes/${atrrId}`,
@@ -391,12 +390,12 @@ export default {
       this.editDialogVisible = true
     },
     // 监听修改对话框的关闭
-    editDialogClosed () {
+    editDialogClosed() {
       // 重置修改的表单
       this.$refs.editFormRef.resetFields()
     },
     // 点击按钮, 修改参数信息
-    editParams () {
+    editParams() {
       this.$refs.editFormRef.validate(async valid => {
         if (!valid) return
         // 校验成功, 发送请求
@@ -417,7 +416,7 @@ export default {
       })
     },
     // 点击按钮, 删除参数信息(根据 id 定向删除)
-    async removeParams (attrId) {
+    async removeParams(attrId) {
       // 弹框提示是否确认删除
       const confirmResult = await this.$confirm(
         '此操作将永久删除该参数, 是否继续?',
@@ -444,7 +443,7 @@ export default {
       this.getParamsData()
     },
     // 按下 enter 鼠标失去焦点, 触发 handleInputConfirm
-    handleInputConfirm (row) {
+    handleInputConfirm(row) {
       if (row.inputValue.trim().length === 0) {
         // 非法输入, 重置为空
         row.inputValue = ''
@@ -460,7 +459,7 @@ export default {
       this.saveAttrVals(row)
     },
     // 将对 attr_vals 的操作，保存到数据库
-    async saveAttrVals (row) {
+    async saveAttrVals(row) {
       // 需要发起请求，保存这次操作
       // 需要将 attr_vals(客户端 array) 转为服务端需要的 String 类型
       const { data: res } = await this.$http.put(
@@ -479,7 +478,7 @@ export default {
       this.$message.success('修改参数项成功！')
     },
     // 点击按钮, 展示文本输入框
-    showInput (row) {
+    showInput(row) {
       row.inputVisible = true
       // 自动获得焦点
       // $nextTick 当页面上元素被重新渲染之后, 才会指定回调函数中的代码
@@ -488,7 +487,7 @@ export default {
       })
     },
     // 删除对应的参数可选项
-    handleClose (i, row) {
+    handleClose(i, row) {
       row.attr_vals.splice(i, 1)
       // 保存到数据库
       this.saveAttrVals(row)
@@ -496,21 +495,21 @@ export default {
   },
   computed: {
     // 计算属性: 控制添加按钮的可用与否
-    isBtnDisabled () {
+    isBtnDisabled() {
       if (this.selectedCateKeys.length !== 3) {
         return true
       }
       return false
     },
     // 当前选中的三级分类的 Id
-    cateId () {
+    cateId() {
       if (this.selectedCateKeys.length === 3) {
         return this.selectedCateKeys[2]
       }
       return null
     },
     // 动态计算标题的文本
-    titleText () {
+    titleText() {
       if (this.activeName === 'many') {
         return '动态参数'
       } else {
