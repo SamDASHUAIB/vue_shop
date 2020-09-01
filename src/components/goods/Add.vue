@@ -96,9 +96,7 @@
               v-for="item in onlyTableData"
               :key="item.attr_id"
             >
-              <el-input v-model="item.attr_vals">
-
-              </el-input>
+              <el-input v-model="item.attr_vals"> </el-input>
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="商品图片" name="3">
@@ -245,9 +243,8 @@ export default {
             item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
         })
         this.manyTableData = res.data
-      }
-      // 证明访问的是静态属性的面板(商品属性)
-      else if (this.activeIndex === '2') {
+      } else if (this.activeIndex === '2') {
+        // 证明访问的是静态属性的面板(商品属性)
         const { data: res } = await this.$http.get(
           `categories/${this.cateId}/attributes`,
           {

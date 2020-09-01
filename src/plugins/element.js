@@ -37,14 +37,9 @@ import {
   CheckboxGroup,
   Checkbox,
   Upload
-
 } from 'element-ui'
-import TreeTable from 'vue-table-with-tree-grid'
-// 手动注册 TreeTable 全局可用
-
 import Timeline from './timeline/index.js'
 import TimelineItem from './timeline-item/index.js'
-Vue.component('tree-table', TreeTable)
 
 // 按需导入所需配件, 先导入, 后使用
 Vue.use(Button)
